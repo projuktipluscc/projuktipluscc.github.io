@@ -26,6 +26,7 @@
             line-height: 1.6;
             color: #333;
             background-color: #fff;
+            padding-top: 70px; /* Fixed navbar-এর জন্য স্থান সংরক্ষণ */
         }
         
         .container {
@@ -43,13 +44,14 @@
             width: 100%;
             top: 0;
             z-index: 1000;
+            padding: 10px 0;
         }
         
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
+            padding: 0 15px;
         }
         
         .logo {
@@ -83,18 +85,29 @@
             color: var(--primary-color);
         }
         
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 2px 0;
+            transition: all 0.3s;
+        }
+        
         /* হিরো সেকশন */
         .hero {
-    background: linear-gradient(rgba(26, 79, 140, 0.8), rgba(26, 79, 140, 0.8)), url('logo ppcc new.jpg') no-repeat center center/cover;
-    min-height: 100vh;   /* height এর বদলে min-height */
-    padding: 100px 20px 50px; /* navbar fixed থাকার কারণে টপে জায়গা রাখবে */
-    display: flex;
-    align-items: center;
-    color: white;
-    text-align: center;
-    padding-top
-}
-
+            background: linear-gradient(rgba(26, 79, 140, 0.8), rgba(26, 79, 140, 0.8)), url('logo ppcc new.jpg') no-repeat center center/cover;
+            min-height: 100vh;
+            padding: 80px 20px 50px;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-align: center;
         }
         
         .hero-content {
@@ -122,6 +135,8 @@
             text-decoration: none;
             font-weight: 600;
             transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
         }
         
         .btn:hover {
@@ -225,6 +240,11 @@
         .course-image {
             height: 200px;
             overflow: hidden;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
         }
         
         .course-image img {
@@ -254,6 +274,11 @@
             overflow: hidden;
             border-radius: 8px;
             position: relative;
+            background-color: #f1f1f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
         }
         
         .gallery-item img {
@@ -291,6 +316,10 @@
         .teacher-image {
             height: 250px;
             overflow: hidden;
+            background-color: #f1f1f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .teacher-image img {
@@ -392,6 +421,7 @@
         
         .form-group textarea {
             height: 150px;
+            resize: vertical;
         }
         
         /* ফুটার */
@@ -444,18 +474,29 @@
         }
         
         /* রেসপনসিভ ডিজাইন */
-        @media (max-width: 768px) {
-            .nav-container {
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
                 flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                padding: 20px;
             }
             
-            .nav-links {
-                margin-top: 15px;
+            .nav-links.active {
+                display: flex;
             }
             
             .nav-links li {
-                margin-left: 15px;
-                margin-right: 15px;
+                margin: 10px 0;
+            }
+            
+            .menu-toggle {
+                display: flex;
             }
             
             .hero-content h2 {
@@ -471,6 +512,48 @@
                 margin-bottom: 30px;
             }
         }
+        
+        @media (max-width: 768px) {
+            .hero-content h2 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .feature-item {
+                min-width: 100%;
+                margin: 10px 0;
+            }
+            
+            .course-card, .teacher-card {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .hero-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -480,7 +563,12 @@
             <div class="logo">
                 <h1>Projukti Plus</h1>
             </div>
-            <ul class="nav-links">
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="nav-links">
                 <li><a href="#home">হোম</a></li>
                 <li><a href="#about">আমাদের সম্পর্কে</a></li>
                 <li><a href="#courses">কোর্সসমূহ</a></li>
@@ -522,7 +610,7 @@
                     📚 বিস্তারিত তথ্য দিয়ে লেকচার শিট থাকা সত্ত্বেও স্টুডেন্টদের সুবিধার জন্য আবার নতুন করে Physics, Chemistry, বুদ্ধিমত্তা, Math এর উপরে Exclusive শর্ট লেকচার নোট দিয়েছি।</p>
                 </div>
                 <div class="about-image">
-                    <img src="logo ppcc new.jpg" alt="Projukti Plus Classroom">
+                    <img src="logo ppcc new.jpg" alt="Projukti Plus Classroom" onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'height:300px; background:#f1f1f1; display:flex; align-items:center; justify-content:center; border-radius:10px; color:#777;\'>ইমেজ লোড হয়নি</div>';">
                 </div>
             </div>
             <div class="features">
@@ -555,7 +643,7 @@
             <div class="course-cards">
                 <div class="course-card">
                     <div class="course-image">
-                        <img src="https://images.unsplash.com/photo-1560785496-3c9d27877182?auto=format&fit=crop&q=80" alt="Polytechnic Admission Course">
+                        <img src="https://images.unsplash.com/photo-1560785496-3c9d27877182?auto=format&fit=crop&q=80" alt="Polytechnic Admission Course" onerror="this.parentNode.innerHTML='<div style=\'display:flex; align-items:center; justify-content:center; height:100%; color:#777;\'>কোর্স ইমেজ</div>';">
                     </div>
                     <div class="course-content">
                         <h3>পলিটেকনিক ভর্তি প্রস্তুতি</h3>
@@ -565,7 +653,7 @@
                 </div>
                 <div class="course-card">
                     <div class="course-image">
-                        <img src="https://images.unsplash.com/photo-1591123120675-6f7f1aae0e5b?auto=format&fit=crop&q=80" alt="Special Batch Course">
+                        <img src="https://images.unsplash.com/photo-1591123120675-6f7f1aae0e5b?auto=format&fit=crop&q=80" alt="Special Batch Course" onerror="this.parentNode.innerHTML='<div style=\'display:flex; align-items:center; justify-content:center; height:100%; color:#777;\'>কোর্স ইমেজ</div>';">
                     </div>
                     <div class="course-content">
                         <h3>স্পেশাল ব্যাচ</h3>
@@ -575,7 +663,7 @@
                 </div>
                 <div class="course-card">
                     <div class="course-image">
-                        <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&q=80" alt="Crash Course">
+                        <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&q=80" alt="Crash Course" onerror="this.parentNode.innerHTML='<div style=\'display:flex; align-items:center; justify-content:center; height:100%; color:#777;\'>কোর্স ইমেজ</div>';">
                     </div>
                     <div class="course-content">
                         <h3>ক্র্যাশ কোর্স</h3>
@@ -596,10 +684,17 @@
             </div>
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <img src="20250827_174109.jpg" alt="Classroom Activity">
+                    <img src="20250827_174109.jpg" alt="Classroom Activity" onerror="this.style.display='none'; this.parentNode.innerHTML='গ্যালারি ইমেজ';">
                 </div>
                 <div class="gallery-item">
-                    <img src="class room ppcc.jpg" alt="Students in Class">
+                    <img src="class room ppcc.jpg" alt="Students in Class" onerror="this.style.display='none'; this.parentNode.innerHTML='গ্যালারি ইমেজ';">
+                </div>
+                <div class="gallery-item">
+                    <div>গ্যালারি ইমেজ</div>
+                </div>
+                <div class="gallery-item">
+                    <div>গ্যালারি ইমেজ</div>
+                </div>
             </div>
         </div>
     </section>
@@ -614,7 +709,7 @@
             <div class="teacher-cards">
                 <div class="teacher-card">
                     <div class="teacher-image">
-                        <img src="moshiur.png" alt="মোঃ মশিউর রহমান">
+                        <img src="moshiur.png" alt="মোঃ মশিউর রহমান" onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'display:flex; align-items:center; justify-content:center; height:100%; color:#777;\'>শিক্ষকের ছবি</div>';">
                     </div>
                     <div class="teacher-info">
                         <h3>মোঃ মশিউর রহমান</h3>
@@ -624,7 +719,7 @@
                 </div>
                 <div class="teacher-card">
                     <div class="teacher-image">
-                        <img src="bari.png" alt="মোঃ আব্দুল বারী">
+                        <img src="bari.png" alt="মোঃ আব্দুল বারী" onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'display:flex; align-items:center; justify-content:center; height:100%; color:#777;\'>শিক্ষকের ছবি</div>';">
                     </div>
                     <div class="teacher-info">
                         <h3>মোঃ আব্দুল বারী</h3>
@@ -634,7 +729,7 @@
                 </div>
                 <div class="teacher-card">
                     <div class="teacher-image">
-                        <img src="logo ppcc.png" alt="মেহেদী হাসান শামস">
+                        <img src="logo ppcc.png" alt="মেহেদী হাসান শামস" onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'display:flex; align-items:center; justify-content:center; height:100%; color:#777;\'>শিক্ষকের ছবি</div>';">
                     </div>
                     <div class="teacher-info">
                         <h3>মেহেদী হাসান শামস</h3>
@@ -670,7 +765,7 @@
                 </div>
                 <div class="contact-form">
                     <h3>মেসেজ পাঠান</h3>
-                    <form>
+                    <form id="contactForm">
                         <div class="form-group">
                             <label for="name">আপনার নাম</label>
                             <input type="text" id="name" required>
@@ -720,5 +815,36 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // মোবাইল মেনু টগল
+        document.getElementById('mobile-menu').addEventListener('click', function() {
+            document.getElementById('nav-links').classList.toggle('active');
+        });
+        
+        // নেভিগেশন লিংক ক্লিক করলে মোবাইল মেনু বন্ধ হবে
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('nav-links').classList.remove('active');
+            });
+        });
+        
+        // ফর্ম সাবমিশন
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('আপনার মেসেজটি পাঠানো হয়েছে! আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।');
+            this.reset();
+        });
+        
+        // স্ক্রোল করার সময় নেভবারে শেডো যোগ
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 10) {
+                navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
